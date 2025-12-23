@@ -71,7 +71,10 @@ const SocialLink = styled.a`
 const About = () => {
   return (
     <Container>
-      <Content>
+
+      
+
+      <Content>    
         <Title>About This Project</Title>
         
         <Text>
@@ -81,7 +84,7 @@ const About = () => {
 
         <Subtitle>How It Works</Subtitle>
         <Text>
-          Users enter a text prompt describing their desired image. The application sends this prompt to OpenAI's DALL·E 2 API, 
+          Users enter a text prompt describing their desired image. The application sends this prompt to Hugging Face's Stable Diffusion XL API, 
           which generates a unique image. The image is then uploaded to Cloudinary for storage, and metadata is saved in MongoDB 
           for community browsing and sharing.
         </Text>
@@ -98,10 +101,10 @@ const About = () => {
             <strong>Database:</strong> MongoDB
           </TechItem>
           <TechItem>
-            <strong>AI:</strong> OpenAI DALL·E 2
+            <strong>AI:</strong> Hugging Face Stable Diffusion
           </TechItem>
           <TechItem>
-            <strong>Storage:</strong> Cloudinary
+            <strong>Storage:</strong> Cloudinary, similar to AWS S3
           </TechItem>
           <TechItem>
             <strong>Deployment:</strong> Render, Netlify
@@ -109,11 +112,12 @@ const About = () => {
         </TechStack>
 
         <Subtitle>Features</Subtitle>
-        <Text>• Generate unique AI images from text prompts</Text>
+        <Text>• Generate unique AI images using Stable Diffusion XL</Text>
         <Text>• Browse community-generated images</Text>
         <Text>• Search images by prompt or author</Text>
         <Text>• Download generated images</Text>
         <Text>• Responsive design for all devices</Text>
+        
 
         <Subtitle>Development Journey</Subtitle>
         <Text>
@@ -133,6 +137,7 @@ const About = () => {
             <Email sx={{ fontSize: 32 }} />
           </SocialLink>
         </SocialLinks>
+        
       </Content>
     </Container>
   );

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { darkTheme, lightTheme } from "./utils/Theme";
+import { darkTheme } from "./utils/Theme";
 import './index.css';
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import ChristmasOverlay from "./components/ChristmasOverlay";
 
 const Container = styled.div`
@@ -30,19 +30,18 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-
+  
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={darkTheme}>
       <Container>
         <Wrapper>
           <BrowserRouter>
-            <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            <Navbar/>
             <Routes>
               <Route path="/" element={<Home/>} exact/>
               <Route path="/post" element={<CreatePost/>} exact/>
               <Route path="/about" element={<About/>} />
+              <Route path="/contact" element={<Contact/>} />
             </Routes>
           </BrowserRouter>
         </Wrapper>
