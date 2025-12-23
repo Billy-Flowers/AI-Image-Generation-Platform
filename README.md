@@ -1,22 +1,34 @@
 # Project Overview
-This application takes a user prompt, sends it to the OpenAI API (DALL·E 2), and returns a unique AI-generated image. The image is then uploaded to Cloudinary, and metadata (prompt, author, image URL) is stored in MongoDB. A React frontend enables users to interact with the generator, browse past posts, and share their creations.
+This application takes a user prompt, sends it to the ~~OpenAI API (DALL·E 2)~~ **Hugging Face API (Stable Diffusion)**, and returns a unique AI-generated image.
+ The image is then uploaded to Cloudinary, and metadata (prompt, author, image URL) is stored in MongoDB. A React frontend enables users to interact with the generator, browse past posts, and share their creations.
+
+## 🔄 Recent Updates
+
+**Migrated from OpenAI DALL·E 2 to Hugging Face Stable Diffusion**
+- Better image quality and generation capabilities
+- Lower cost
+- Updated API integration for improved performance
+- Enhanced model reliability
+
+
 
 # Tech Stack
 | Layer        | Tech Used                               |
 | ------------ | --------------------------------------- |
-| **Frontend** | React, CSS, Axios, React Hooks |
-| **Backend**  | Node.js, Express.js, REST API           |
+| **Frontend** | React, Styled-Components                |
+| **Backend**  | Node.js, Express.js                     |
 | **Database** | MongoDB for metadata storage            |
 | **Cloud**    | Cloudinary for image storage            |
-| **AI**       | OpenAI API (DALL·E 2 model)             |
+| **AI**       | Hugging Face (Stable Diffusion)         |
 
 ## Homepage
-![Image](https://github.com/user-attachments/assets/5947b340-cd1e-41f9-ba51-197d62c386e4) 
+![Image](images/home-page-Dec-25.png) 
 
 ## Create Post
-![Image](https://github.com/user-attachments/assets/87f81379-afc5-4d92-91c2-9c3e55705c7a)
+![Image](images/create-post-Dec-25.png)
 
-The Dall-E 2 model is not that great, but it is cheap. 👍
+Stable Diffusion provides high-quality image generation! 🎨  
+~~The Dall-E 2 model is not that great, but it is cheap. 👍~~
 
 # Getting Started
 ### Clone the Repository:
@@ -35,6 +47,10 @@ npm install
 ### Create a .env file and add your API key:
 ```
 API_KEY=your_api_key_here
+MONGODB_URI=mongodb_uri_from_mongodb_atlas_cluster
+CLOUDINARY_CLOUD_NAME=your_key_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_secret_key_here
 ```
 
 ### Set Up Frontend:
@@ -53,7 +69,7 @@ Interact with the frontend by entering text prompts and viewing generated images
 
 
 ## Deployment
-To deploy your application, consider using platforms like Heroku or Vercel. Ensure you configure environment variables and set up the necessary build processes as per the platform's documentation.
+To deploy your application, consider using platforms like Netlify, Render or Vercel. I use Netlify for frontend and Render for backend. Ensure you configure environment variables, like your api keys and set up the necessary build processes as per the platform's documentation.
 
 ## Next Steps
 - Enhance the Frontend: Add features like image downloading, prompt history, or user authentication.
