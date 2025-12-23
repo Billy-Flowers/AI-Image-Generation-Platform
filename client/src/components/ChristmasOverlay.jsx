@@ -34,18 +34,75 @@ const Snowflake = styled.div`
 
 const ChristmasBells = styled.div`
   position: fixed;
-  top: 10px;
-  right: 20px;
+  top: ${props => props.y}px;
+  left: ${props => props.x}px;
   font-size: 24px;
   animation: ${swing} 2s ease-in-out infinite;
-  cursor: pointer;
+  cursor: ${props => props.isDragging ? 'grabbing' : 'grab'};
   pointer-events: auto;
   z-index: 1001;
   user-select: none;
+  white-space: nowrap;
 `;
 
 const ChristmasOverlay = () => {
   const [showAnimation, setShowAnimation] = useState(true);
+  const [position, setPosition] = useState({ x: window.innerWidth - 60, y: 10 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [audio] = useState(new Audio(bellSound));
+
+  const playBellSound = () => {
+    if (!audio.paused) return;
+    audio.currentTime = 0;
+    audio.volume = 0.3;
+    audio.play().catch(console.log);
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    const rect = e.target.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+    
+    let lastX = e.clientX;
+    let lastY = e.clientY;
+    let rapidMoves = 0;
+    let lastMoveTime = Date.now();
+
+    const handleMouseMove = (e) => {
+      const x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - 50));
+      const y = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - 30));
+      setPosition({ x, y });
+
+      const currentTime = Date.now();
+      const deltaX = Math.abs(e.clientX - lastX);
+      const deltaY = Math.abs(e.clientY - lastY);
+      const timeDiff = currentTime - lastMoveTime;
+      
+      if (timeDiff < 50 && (deltaX > 15 || deltaY > 15)) {
+        rapidMoves++;
+        if (rapidMoves >= 5) {
+          playBellSound();
+          rapidMoves = 0;
+        }
+      } else if (timeDiff > 200) {
+        rapidMoves = 0;
+      }
+      
+      lastX = e.clientX;
+      lastY = e.clientY;
+      lastMoveTime = currentTime;
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setShowAnimation(false), 5000);
@@ -61,15 +118,17 @@ const ChristmasOverlay = () => {
     symbol: ['❄️', '⭐', '🎄', ][Math.floor(Math.random() * 3)]
   }));
 
-  const playBellSound = () => {
-    const audio = new Audio(bellSound);
-    audio.volume = 0.3;
-    audio.play().catch(console.log);
-    };
-
   return (
     <OverlayContainer>
-      <ChristmasBells onClick={playBellSound}>🔔🎄</ChristmasBells>
+      <ChristmasBells 
+        x={position.x} 
+        y={position.y} 
+        isDragging={isDragging}
+        onMouseDown={handleMouseDown}
+      >
+        🔔🎄
+      </ChristmasBells>
+
       {showAnimation && snowflakes.map(flake => (
         <Snowflake
           key={flake.id}
@@ -84,5 +143,6 @@ const ChristmasOverlay = () => {
     </OverlayContainer>
   );
 };
+
 
 export default ChristmasOverlay;
