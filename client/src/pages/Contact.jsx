@@ -89,7 +89,7 @@ const Contact = () => {
           </ContactItem>
           <ContactItem>
             <LocationOn />
-            <span>Dallas, TX (Open for Remote & On-site Opportunities)</span>
+            <span>Dallas, TX</span>
           </ContactItem>
         </ContactCard>
 
