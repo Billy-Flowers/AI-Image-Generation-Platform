@@ -47,16 +47,31 @@ const ChristmasBells = styled.div`
 
 const ChristmasOverlay = () => {
   const [showAnimation, setShowAnimation] = useState(true);
+  const [triggerAnimation] = useState(false);
   const [position, setPosition] = useState({ x: window.innerWidth - 60, y: 10 });
   const [isDragging, setIsDragging] = useState(false);
   const [audio] = useState(new Audio(bellSound));
+  const [dropItems, setDropItems] = useState([]);
+
 
   const playBellSound = () => {
-    if (!audio.paused) return;
-    audio.currentTime = 0;
-    audio.volume = 0.3;
-    audio.play().catch(console.log);
-  };
+  if (!audio.paused) return;
+  audio.currentTime = 0;
+  audio.volume = 0.3;
+  audio.play().catch(console.log);
+  
+  const newItems = Array.from({ length: 15 }, (_, i) => ({
+    id: Date.now() + i,
+    left: Math.random() * 100,
+    size: Math.random() * 10 + 10,
+    duration: Math.random() * 2 + 1,
+    delay: 0,
+    symbol: ['❄️', '⭐', '🎄'][Math.floor(Math.random() * 3)]
+  }));
+  
+  setDropItems(prev => [...prev, ...newItems]);
+  setTimeout(() => setDropItems([]), 4500);
+};
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -129,17 +144,31 @@ const ChristmasOverlay = () => {
         🔔🎄
       </ChristmasBells>
 
-      {showAnimation && snowflakes.map(flake => (
-        <Snowflake
-          key={flake.id}
-          left={flake.left}
-          size={flake.size}
-          duration={flake.duration}
-          delay={flake.delay}
-        >
-          {flake.symbol}
-        </Snowflake>
-      ))}
+      {(showAnimation || triggerAnimation) && snowflakes.map(flake => (
+      <Snowflake
+        key={flake.id}
+        left={flake.left}
+        size={flake.size}
+        duration={flake.duration}
+        delay={flake.delay}
+      >
+        {flake.symbol}
+      </Snowflake>
+    ))}
+
+    {dropItems.map(item => (
+      <Snowflake
+        key={item.id}
+        left={item.left}
+        size={item.size}
+        duration={item.duration}
+        delay={item.delay}
+      >
+        {item.symbol}
+      </Snowflake>
+    ))}
+
+
     </OverlayContainer>
   );
 };
